@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Calculator</title>
+	<style>
+		body {
+			background-color: #f5f5f5;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		.container {
+			width: 100%;
+			margin-left: auto;
+			box-sizing: border-box;
+			margin-right: auto;
+			display: block;
+			max-width: 1200px;
+			padding-left: 24px;
+    		padding-right: 24px;
+    		text-align: center;
+		}
+		.title{
+			color: #2e3851;
+		}
+		.calculator {
+			position: relative;
+			max-width: 300px;
+			width: 100%;
+			margin: auto;
+			border-radius: 12px;
+			padding: 10px 20px 20px;
+			background: #2e3851;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+		}
+		.display {
+			height: 80px;
+			width: 100%;
+			padding: 5px;
+			outline: none;
+			border: none;
+			text-align: right;
+			margin: 10px 0;
+			font-size: 30px;
+			color: #18d4a3;
+			box-sizing: border-box;
+			pointer-events: none;
+			background-color: #212b41;
+			border-radius: 6px;
+		}
+		.buttons {
+			display: grid;
+			grid-gap: 10px;
+			grid-template-columns: repeat(4, 1fr);
+		}
+		.buttons button {
+			padding: 15px;
+			border-radius: 6px;
+			border: none;
+			font-size: 20px;
+			cursor: pointer;
+			background-color: #2e3851;
+			color: #849592;
+		}
+		.buttons button:hover {
+			background-color: #212b41;
+		}
+		.buttons button.operator {
+			background-color: #212b41;
+			color: #18d4a3;
+		}
+		.buttons button.operator:hover {
+			background-color: #181f2f;
+		}
+		.buttons button.equals{
+			background-color: #18d4a3;
+			color: #2e3851;
+		}
+		.buttons button.equals:hover{
+			background-color: #14bf92;
+
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1 class="title"> Calculator</h1>
+		<div class="calculator">
+
+			<input type="text" class="display" />
+			<div class="buttons">
+				<button class="operator" data-value="AC">AC</button>
+				<button class="operator" data-value="DEL">DEL</button>
+				<button class="operator" data-value="%">%</button>
+				<button class="operator" data-value="/">/</button>
+
+				<button data-value="7">7</button>
+				<button data-value="8">8</button>
+				<button data-value="9">9</button>
+				<button class="operator" data-value="*">*</button>
+
+				<button data-value="4">4</button>
+				<button data-value="5">5</button>
+				<button data-value="6">6</button>
+				<button class="operator" data-value="-">-</button>
+
+				<button data-value="1">1</button>
+				<button data-value="2">2</button>
+				<button data-value="3">3</button>
+				<button class="operator" data-value="+">+</button>
+
+				<button data-value="0">0</button>
+				<button data-value="00">00</button>
+				<button data-value=".">.</button>
+				<button class="operator equals" data-value="=">=</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		const display = document.querySelector(".display");
+		const buttons = document.querySelectorAll("button");
+		const operator = ["%", "*", "/", "-", "+", "="];
+		let output = "";
+
+		const calculate = (btnValue) => {
+			display.focus();
+			if (btnValue === "=" && output !== "") {
+				if(output.slice(-1) === "%" || output.slice(-1) === "*"|| 
+					output.slice(-1) === "/"|| output.slice(-1) === "-"|| output.slice(-1) === "+") return
+				try{
+					output = eval(output.replace("%", "/100"));
+				}catch(e){
+					alert("Información no valida")
+				}
+			} else if (btnValue === "AC") {
+				output = "";
+			} else if (btnValue === "DEL") {
+				output = output.toString().slice(0, -1);
+			}else {
+				if (output === "" && operator.includes(btnValue)) return;
+				output += btnValue;
+			}
+			display.value = output;
+		};
+
+		buttons.forEach((button) => {
+
+			button.addEventListener("click", (e) => {calculate(e.target.dataset.value)});
+		});
+	</script>
+</body>
+</html>
